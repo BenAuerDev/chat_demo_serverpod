@@ -12,6 +12,8 @@ library protocol; // ignore_for_file: no_leading_underscores_for_library_prefixe
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod/protocol.dart' as _i2;
 import 'chat_message.dart' as _i3;
+import 'package:chat_demo_serverpod_server/src/generated/chat_message.dart'
+    as _i4;
 export 'chat_message.dart';
 
 class Protocol extends _i1.SerializationManagerServer {
@@ -85,6 +87,10 @@ class Protocol extends _i1.SerializationManagerServer {
     }
     if (t == _i1.getType<_i3.ChatMessage?>()) {
       return (data != null ? _i3.ChatMessage.fromJson(data, this) : null) as T;
+    }
+    if (t == List<_i4.ChatMessage>) {
+      return (data as List).map((e) => deserialize<_i4.ChatMessage>(e)).toList()
+          as dynamic;
     }
     try {
       return _i2.Protocol().deserialize<T>(data, t);
