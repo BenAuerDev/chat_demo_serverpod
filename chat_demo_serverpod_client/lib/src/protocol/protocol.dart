@@ -10,6 +10,8 @@
 library protocol; // ignore_for_file: no_leading_underscores_for_library_prefixes
 
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
+import 'chat_message.dart' as _i2;
+export 'chat_message.dart';
 export 'client.dart';
 
 class Protocol extends _i1.SerializationManager {
@@ -30,16 +32,28 @@ class Protocol extends _i1.SerializationManager {
     if (customConstructors.containsKey(t)) {
       return customConstructors[t]!(data, this) as T;
     }
+    if (t == _i2.ChatMessage) {
+      return _i2.ChatMessage.fromJson(data, this) as T;
+    }
+    if (t == _i1.getType<_i2.ChatMessage?>()) {
+      return (data != null ? _i2.ChatMessage.fromJson(data, this) : null) as T;
+    }
     return super.deserialize<T>(data, t);
   }
 
   @override
   String? getClassNameForObject(Object data) {
+    if (data is _i2.ChatMessage) {
+      return 'ChatMessage';
+    }
     return super.getClassNameForObject(data);
   }
 
   @override
   dynamic deserializeByClassName(Map<String, dynamic> data) {
+    if (data['className'] == 'ChatMessage') {
+      return deserialize<_i2.ChatMessage>(data['data']);
+    }
     return super.deserializeByClassName(data);
   }
 }
